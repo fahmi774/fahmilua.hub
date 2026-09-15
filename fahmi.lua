@@ -57,10 +57,8 @@ local Theme = {
 local WA_CHANNEL_LINK =
     "https://chat.whatsapp.com/I9w7S1W2wKs13rb9Btv7au?s=cl&p=a&mlu=4&ilr=4"
 
-
 -- ============================================================================
 -- [ SCRIPT DATABASE ]
--- Semua URL di bawah dipertahankan dari kode yang kamu kirim.
 -- ============================================================================
 
 local ScriptDataStealAnEgg = {
