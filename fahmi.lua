@@ -1,66 +1,52 @@
 -- ============================================================================
--- FAHMI HUB v2
--- SIDEBAR KATEGORI + FILTER SYSTEM + INFO ALL SCRIPT
+-- FAHMI HUB v2 - SIDEBAR KATEGORI + FILTER SYSTEM + ELEGANT INFO ALL SCRIPT
 -- ============================================================================
 
--- [ SERVICES ]
+-- [ PRE-INITIALIZATION CLEANUP ]
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-
 local LocalPlayer = Players.LocalPlayer
 
--- [ CLEANUP ]
 local function DestroyOldUI(name)
-    local old = CoreGui:FindFirstChild(name)
-
-    if not old and LocalPlayer then
-        local PlayerGui = LocalPlayer:FindFirstChild("PlayerGui")
-        if PlayerGui then
-            old = PlayerGui:FindFirstChild(name)
-        end
-    end
-
+    local old = CoreGui:FindFirstChild(name) or (LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") and LocalPlayer.PlayerGui:FindFirstChild(name))
     if old then
-        pcall(function()
-            old:Destroy()
-        end)
+        pcall(function() old:Destroy() end)
     end
 end
 
-DestroyOldUI("fahmiHubGuiV2")
+DestroyOldUI("FAHMIHubGuiV2")
 
--- [ CONFIG ]
+-- [ 1. SERVICES ]
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+-- [ 2. CONFIGURASI & THEME ]
 local Theme = {
     Background = Color3.fromRGB(11, 14, 21),
     CardBg = Color3.fromRGB(18, 24, 43),
     CardBgHover = Color3.fromRGB(26, 36, 64),
     AccentBlue = Color3.fromRGB(37, 120, 255),
-
     BadgeBg = Color3.fromRGB(18, 24, 43),
     BadgeBorder = Color3.fromRGB(34, 50, 86),
-
+    RunPillBg = Color3.fromRGB(34, 50, 86),
     TextPrimary = Color3.fromRGB(255, 255, 255),
     TextSecondary = Color3.fromRGB(140, 155, 180),
     TextMuted = Color3.fromRGB(107, 114, 128),
-
     BorderColor = Color3.fromRGB(28, 36, 52),
-
+    GoldBadge = Color3.fromRGB(255, 185, 0),
     KeyTagBg = Color3.fromRGB(220, 53, 69),
     NoKeyTagBg = Color3.fromRGB(40, 167, 69),
-
     WaGreen = Color3.fromRGB(37, 211, 102),
     WaDarkGreen = Color3.fromRGB(18, 38, 28)
 }
 
-local WA_CHANNEL_LINK =
-    "https://chat.whatsapp.com/I9w7S1W2wKs13rb9Btv7au?s=cl&p=a&mlu=4&ilr=4"
+local WA_CHANNEL_LINK = "https://whatsapp.com/channel/"
 
--- ============================================================================
--- [ SCRIPT DATABASE ]
--- ============================================================================
+-- [ MAIN GITHUB LOADER TERPISAH ]
+local MAIN_GITHUB_LOADER = "https://raw.githubusercontent.com/n01771542-cmd/faluahub/main/main.lua"
 
+-- [ 3. DATA KATEGORI & DAFTAR SCRIPT ]
 local ScriptDataStealAnEgg = {
     { name = "YANTO HUB KEY : YANTOHUB", status = "Key", recommended = true, url = "https://raw.githubusercontent.com/YantoRoblox/Script-Free-YantoHUB/refs/heads/main/YantoHUB" },
     { name = "FYY HUB", status = "Key", recommended = true, url = "https://FyyCommunity.my.id" },
@@ -116,7 +102,7 @@ local ScriptDataStealAnEgg = {
     { name = "JINHUB", status = "Key", recommended = false, url = "https://jinhub.my.id/scripts/Universal.lua" },
     { name = "OVERFLOW", status = "Key", recommended = false, url = "https://overflow.cx/loader.lua" },
     { name = "BLYXO HUB", status = "No Key", recommended = true, url = "https://flowauth.net/v1/loaders/69d3463240384f3a73fbe32c178093a2.lua" },
-    { name = "SENA HUB V2", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/senarblx/sena/refs/heads/main/loaderv2sena" },
+    { name = "SENA V3", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/senarblx/sena/refs/heads/main/senav3go" },
     { name = "TOOLBOX", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/Abdullahking20/loader-lua/main/loader" },
     { name = "SOLVEXGUI HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/Solvexxxx/Scripts/refs/heads/main/SolvexGUI_SAE.lua" },
     { name = "SPEED BYPASS", status = "No Key", recommended = false, url = "https://pastefy.app/iedWaiQX/raw" },
@@ -137,238 +123,160 @@ local ScriptDataStealAnEgg = {
     { name = "BERRI HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/moshixzn/ahhagdienavd/refs/heads/main/loader.lua.txt" },
     { name = "NOCTRUNHUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/insanecontenty2k-blip/scriptss/main/universalscriptsofop" },
     { name = "CITRA HUB", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/gilgameshfate59/ohbfoosk8tid/main/CitraLoader.lua" },
-    { name = "VINCI HUB", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/tutorkah104-rgb/Steal-an-Egg/refs/heads/main/Vincitore.luau" },
+    { name = "VINCI HUB", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/tutorkah104-rgb/Steal-an-Egg/refs/heads/main/Vincitore.luau" },
     { name = "HORIZON HUB ANTI HIT", status = "No Key", recommended = false, url = 'script_key = "Trial"; loadstring(game:HttpGet("https://api.getpolsec.com/scripts/hosted/6582551b42d21c6b7eb55f1d76d8d50ce53cb35592093d6615b5e83437594dc0.lua"))()' },
     { name = "CHILLI HUB", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua" },
-    { name = "TSUO HUB", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/Tsuo7/TsuoHub/main/stealanegg" },
-    { name = "LKZ HUB", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/LucasggkX/LKZ-Hub/refs/heads/main/Loader.lua" },
+    { name = "TSUO HUB", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/Tsuo7/TsuoHub/main/stealanegg" },
+    { name = "LKZ HUB", status = "No Key", recommended = true, url = "https://raw.githubusercontent.com/LucasggkX/LKZ-Hub/refs/heads/main/Loader.lua" },
     { name = "REZZY HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/Roman666Cabj/Nether/refs/heads/main/RezzyStealAnEgg.lua" },
-    { name = "RAVANGE HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/Revenge-Hub-Roblox/Scripts/refs/heads/main/Loader.lua" }
+    { name = "RAVANGE HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/Revenge-Hub-Roblox/Scripts/refs/heads/main/Loader.lua" },
+    { name = "ZNEX HUB", status = "Key", recommended = false, url = "https://api.jnkie.com/api/v1/luascripts/public/181cfe2bd5df35ce78607b5ffb37c6666abd76eda11ff33b0f24a1b2d8ee935f/download" },
+    { name = "ASVARA HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/asvraRoblox/stealegg/refs/heads/main/main" },
+    { name = "VSN", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/NetNullv1/VSN/refs/heads/main/HUB" },
+    { name = "SHADOW HUB", status = "Key", recommended = false, url = "https://pastebin.com/raw/QAvDbBKa" },
+    { name = "VELOX HUB", status = "Key", recommended = false, url = "https://api.jnkie.com/api/v1/luascripts/public/f0b3ce85f588800ae7e46415fc4dd79ff2b0d09c9b6a8e19cea8a67b47f1bcbd/download" },
+    { name = "KING VYPER (KEY: KV-FREE-TRIAL-WOKS)", status = "Key", recommended = false, url = "https://kingvypers.site/raw/TrialLoader" },
+    { name = "HIP-HUP", status = "Key", recommended = true, url = "https://hiphub.cloud/api/script-roblox/loader" }
 }
 
--- [ DEDUPLICATION ]
+-- [ DATA NEW SCRIPTS (6 NEW SCRIPTS) ]
+local NewScriptsData = {
+    { name = "BK HUB", status = "No Key", recommended = true, url = "https://api.luarmor.net/files/v4/loaders/9ee4edde227ac85f50872bf9e4226508.lua" },
+    { name = "AXURS", status = "No Key", recommended = false, url = "https://raw.githubusercontent.com/XE3Scripts/Axur-sGamesHub/refs/heads/main/StealAnEgg" },
+    { name = "POTATO HUB", status = "Key", recommended = false, url = "https://raw.githubusercontent.com/potatohub67/potatoscripts/refs/heads/main/stealaegg.lua" },
+    { name = "JANE HUB", status = "No Key", recommended = false, url = "https://flowauth.net/v1/loaders/3c4e87ed34813171b0f8d53a108a7d88.lua" },
+    { name = "WIS HUB", status = "No Key", recommended = true, url = "https://api.wishub.cloud/files/loader.lua" },
+    { name = "SOFTKILLZ", status = "No Key", recommended = false, url = "https://pastebin.com/raw/ZuEBwb5K" }
+}
+
+-- Otomatis masukkan NewScriptsData ke dalam ScriptDataStealAnEgg agar masuk ke tab Steal An Egg & Info
+for _, newScript in ipairs(NewScriptsData) do
+    table.insert(ScriptDataStealAnEgg, newScript)
+end
+
+-- Deduplikasi jika name + status + url persis sama
 local CleanedScripts = {}
 local DuplicateTracker = {}
-
-for _, scriptInfo in ipairs(ScriptDataStealAnEgg) do
-    local identifier =
-        tostring(scriptInfo.name)
-        .. "|"
-        .. tostring(scriptInfo.status)
-        .. "|"
-        .. tostring(scriptInfo.url)
-
+for _, s in ipairs(ScriptDataStealAnEgg) do
+    local identifier = s.name .. "|" .. s.status .. "|" .. s.url
     if not DuplicateTracker[identifier] then
         DuplicateTracker[identifier] = true
-        table.insert(CleanedScripts, scriptInfo)
+        table.insert(CleanedScripts, s)
     end
 end
 
--- [ CATEGORIES ]
 local Categories = {
     {
         key = "StealAnEgg",
-        name = "STEAL AN EGG",
+        name = "steal an egg",
         type = "script_list",
-        scripts = CleanedScripts
+        scripts = CleanedScripts,
     },
-
     {
         key = "InfoAllScript",
-        name = "INFO / ALL SCRIPT",
+        name = "info/all script",
         type = "info",
-        scripts = CleanedScripts
+        scripts = CleanedScripts,
     },
-
     {
         key = "NewScript",
-        name = "NEW SCRIPT",
+        name = "new script",
         type = "new_script",
-        scripts = {}
-    }
+        scripts = NewScriptsData,
+        hasNotification = true, -- Tanda bahwa kategori ini memiliki pembaruan/notifikasi
+    },
 }
 
 local activeCategoryIndex = 1
 local activeFilter = "ALL"
 
--- ============================================================================
--- [ UI HELPERS ]
--- ============================================================================
-
-local function CreateCorner(object, radius)
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, radius)
-    corner.Parent = object
-    return corner
-end
-
-local function CreateStroke(object, color, thickness)
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = color
-    stroke.Thickness = thickness or 1
-    stroke.Parent = object
-    return stroke
-end
-
-local function CreateText(parent, text, size, color, font)
-    local label = Instance.new("TextLabel")
-    label.BackgroundTransparency = 1
-    label.Text = text
-    label.TextColor3 = color or Theme.TextPrimary
-    label.TextSize = size or 12
-    label.Font = font or Enum.Font.Gotham
-    label.Parent = parent
-    return label
-end
-
--- ============================================================================
--- [ ROOT GUI ]
--- ============================================================================
-
+-- [ 4. ROOT UI ]
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "fahmiHubGuiV2"
+ScreenGui.Name = "FAHMIHubGuiV2"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-pcall(function()
-    ScreenGui.Parent = CoreGui
-end)
-
-if not ScreenGui.Parent and LocalPlayer then
-    ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-end
-
--- ============================================================================
--- [ MAIN FRAME ]
--- ============================================================================
+pcall(function() ScreenGui.Parent = CoreGui end)
+if not ScreenGui.Parent then ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.fromOffset(720, 460)
+MainFrame.Size = UDim2.fromOffset(620, 380)
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.Position = UDim2.fromScale(0.5, 0.5)
 MainFrame.BackgroundColor3 = Theme.Background
 MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = false
 MainFrame.Active = true
-MainFrame.Visible = true
+MainFrame.Visible = false
 MainFrame.Parent = ScreenGui
 
-CreateCorner(MainFrame, 12)
-CreateStroke(MainFrame, Theme.BorderColor, 1)
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 
--- ============================================================================
--- [ HEADER ]
--- ============================================================================
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Theme.BorderColor
+MainStroke.Thickness = 1
+MainStroke.Parent = MainFrame
 
+local MainScale = Instance.new("UIScale")
+MainScale.Scale = 0
+MainScale.Parent = MainFrame
+
+-- [ 5. LOGO VEKTOR "F" ]
+local function CreateFLogo(size, rotation)
+    local container = Instance.new("Frame")
+    container.Size = size
+    container.BackgroundTransparency = 1
+    container.Rotation = rotation or -12
+
+    local topBar = Instance.new("Frame")
+    topBar.Size = UDim2.new(1, 0, 0, math.floor(size.Y.Offset * 0.28))
+    topBar.BackgroundColor3 = Theme.AccentBlue
+    topBar.BorderSizePixel = 0
+    topBar.Parent = container
+    Instance.new("UICorner", topBar).CornerRadius = UDim.new(0, 2)
+
+    local midBar = Instance.new("Frame")
+    midBar.Size = UDim2.new(0.68, 0, 0, math.floor(size.Y.Offset * 0.24))
+    midBar.Position = UDim2.new(0.2, 0, 0.4, 0)
+    midBar.BackgroundColor3 = Theme.AccentBlue
+    midBar.BorderSizePixel = 0
+    midBar.Parent = container
+    Instance.new("UICorner", midBar).CornerRadius = UDim.new(0, 2)
+
+    local stem = Instance.new("Frame")
+    stem.Size = UDim2.new(0, math.floor(size.X.Offset * 0.28), 1, 0)
+    stem.Position = UDim2.new(0.08, 0, 0, 0)
+    stem.BackgroundColor3 = Theme.AccentBlue
+    stem.BorderSizePixel = 0
+    stem.Parent = container
+    Instance.new("UICorner", stem).CornerRadius = UDim.new(0, 2)
+
+    return container
+end
+
+-- [ 6. HEADER ]
 local Header = Instance.new("Frame")
-Header.Size = UDim2.new(1, 0, 0, 54)
+Header.Name = "Header"
+Header.Size = UDim2.new(1, 0, 0, 46)
 Header.BackgroundTransparency = 1
+Header.Active = true
 Header.Parent = MainFrame
 
-local Title = CreateText(
-    Header,
-    "FAHMI HUB",
-    17,
-    Theme.TextPrimary,
-    Enum.Font.GothamBold
-)
+local LogoF = CreateFLogo(UDim2.fromOffset(18, 18), -12)
+LogoF.Position = UDim2.new(0, 14, 0, 10)
+LogoF.Parent = Header
 
-Title.Position = UDim2.fromOffset(18, 8)
-Title.Size = UDim2.fromOffset(150, 22)
-Title.TextXAlignment = Enum.TextXAlignment.Left
+local Badge = Instance.new("TextLabel")
+Badge.Name = "Badge"
+Badge.Font = Enum.Font.GothamBold
+Badge.TextSize = 9
+Badge.TextColor3 = Color3.fromRGB(111, 168, 255)
+Badge.BackgroundColor3 = Theme.BadgeBg
+Badge.Size = UDim2.fromOffset(120, 18)
+Badge.Position = UDim2.new(0, 40, 0, 26)
+Badge.Text = "script steal an egg"
+Badge.TextXAlignment = Enum.TextXAlignment.Center
+Badge.Parent = Header
 
-local Subtitle = CreateText(
-    Header,
-    "script steal an egg",
-    9,
-    Theme.TextSecondary,
-    Enum.Font.Gotham
-)
-
-Subtitle.Position = UDim2.fromOffset(19, 30)
-Subtitle.Size = UDim2.fromOffset(150, 16)
-Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-
--- [ WHATSAPP BUTTON ]
-
-local WaBtn = Instance.new("TextButton")
-WaBtn.Name = "WaChannelBtn"
-WaBtn.Size = UDim2.fromOffset(190, 30)
-WaBtn.Position = UDim2.new(1, -235, 0, 12)
-WaBtn.BackgroundColor3 = Theme.WaGreen
-WaBtn.Text = "💬 LINK SALURAN WA"
-WaBtn.TextColor3 = Theme.TextPrimary
-WaBtn.TextSize = 10
-WaBtn.Font = Enum.Font.GothamBold
-WaBtn.AutoButtonColor = false
-WaBtn.Parent = Header
-
-CreateCorner(WaBtn, 6)
-
-WaBtn.MouseEnter:Connect(function()
-    TweenService:Create(
-        WaBtn,
-        TweenInfo.new(0.15),
-        {BackgroundColor3 = Theme.WaDarkGreen}
-    ):Play()
-end)
-
-WaBtn.MouseLeave:Connect(function()
-    TweenService:Create(
-        WaBtn,
-        TweenInfo.new(0.15),
-        {BackgroundColor3 = Theme.WaGreen}
-    ):Play()
-end)
-
-WaBtn.MouseButton1Click:Connect(function()
-    local copied = false
-
-    if typeof(setclipboard) == "function" then
-        copied = pcall(function()
-            setclipboard(WA_CHANNEL_LINK)
-        end)
-    elseif typeof(toclipboard) == "function" then
-        copied = pcall(function()
-            toclipboard(WA_CHANNEL_LINK)
-        end)
-    end
-
-    local oldText = WaBtn.Text
-    WaBtn.Text = copied and "✓ COPIED!" or "COPY FAILED"
-
-    task.delay(1.5, function()
-        if WaBtn and WaBtn.Parent then
-            WaBtn.Text = oldText
-        end
-    end)
-end)
-
--- [ CLOSE BUTTON ]
-
-local CloseBtn = Instance.new("TextButton")
-CloseBtn.Size = UDim2.fromOffset(28, 28)
-CloseBtn.Position = UDim2.new(1, -34, 0, 13)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(40, 44, 55)
-CloseBtn.Text = "×"
-CloseBtn.TextColor3 = Theme.TextPrimary
-CloseBtn.TextSize = 18
-CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.Parent = Header
-
-CreateCorner(CloseBtn, 6)
-
-CloseBtn.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
--- ============================================================================
--- [ SIDEBAR ]
--- ============================================================================
-
-local Sidebar = Instance.new("Frame")
-Sidebar.Name = "Sidebar"
-Sidebar.Size = UDim2.fromOffset(175, 386)
-Sidebar.Position = UDim2.fromOffset(12, 62)
-Sidebar.BackgroundColor3 = Theme.CardBg
-Sidebar.BorderS
+Instance.new("UICorner", Badge).Corne
